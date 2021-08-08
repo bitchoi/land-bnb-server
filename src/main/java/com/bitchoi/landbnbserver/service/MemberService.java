@@ -15,8 +15,10 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
 
     public void create(RegMemberDto regMemberDto){
-        memberRepo.findByEmail(regMemberDto.getEmail()).orElseThrow(() -> new IllegalArgumentException("This email is already in use."));
-
+        var existEmail = memberRepo.findByEmail(regMemberDto.getEmail());
+        if(existEmail.isPresent()){
+            throw new IllegalArgumentException("already use email");
+        }
         Member member = new Member();
         member.setEmail(regMemberDto.getEmail());
         member.setPassword(passwordEncoder.encode(regMemberDto.getPassword()));

@@ -13,6 +13,10 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     public static final String[] WHITELIST = {
+            "/v2/api-docs",
+            "/webjars/**",
+            "/swagger-resources/**",
+            "/swagger-ui.html",
             "/registrations/**"
     };
 
