@@ -1,6 +1,8 @@
 package com.bitchoi.landbnbserver.service;
 
+import com.bitchoi.landbnbserver.constant.ErrorCode;
 import com.bitchoi.landbnbserver.dto.RegMemberDto;
+import com.bitchoi.landbnbserver.exception.BusinessException;
 import com.bitchoi.landbnbserver.model.Member;
 import com.bitchoi.landbnbserver.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,10 +17,10 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
 
     public void create(RegMemberDto regMemberDto){
-        var existEmail = memberRepo.findByEmail(regMemberDto.getEmail());
-        if(existEmail.isPresent()){
-            throw new IllegalArgumentException("already use email");
+        if(memberRepo.existByEmail(regMemberDto.getEmail())) {
+            throw new BusinessException(ErrorCode.EMAIL_ALREADY_USED);
         }
+
         Member member = new Member();
         member.setEmail(regMemberDto.getEmail());
         member.setPassword(passwordEncoder.encode(regMemberDto.getPassword()));
