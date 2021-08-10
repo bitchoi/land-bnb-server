@@ -5,9 +5,12 @@ import com.bitchoi.landbnbserver.dto.RegMemberDto;
 import com.bitchoi.landbnbserver.exception.BusinessException;
 import com.bitchoi.landbnbserver.model.Member;
 import com.bitchoi.landbnbserver.repository.MemberRepository;
+import com.bitchoi.landbnbserver.security.UserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -28,5 +31,13 @@ public class MemberService {
         member.setFirstName(regMemberDto.getFirstName());
         member.setBirthDay(regMemberDto.getBirthDay());
         memberRepo.save(member);
+    }
+
+    public Optional<UserDetails> getUserByEmail(String email) {
+        Optional<Member> optUsr = memberRepo.findByEmail(email);
+
+        if (optUsr.isPresent())
+            return Optional.of(new UserDetails(optUsr.get()));
+        else return Optional.empty();
     }
 }

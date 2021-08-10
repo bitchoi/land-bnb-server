@@ -4,7 +4,8 @@ import org.springframework.http.HttpStatus;
 
 public enum ErrorCode {
 
-    EMAIL_ALREADY_USED(409, HttpStatus.CONFLICT, "이미 사용중인 이메일입니다");
+    EMAIL_ALREADY_USED(409, HttpStatus.CONFLICT, "이미 사용중인 이메일입니다"),
+    WRONG_EMAIL_OR_PASSWORD(401, HttpStatus.UNAUTHORIZED, "이메일 또는 패스워드가 틀렸습니다.");
 
     private final int code;
 
