@@ -30,7 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/swagger-resources/**",
             "/swagger-ui.html",
             "/registrations/**",
-            "/auth/**",
+            "/auth/login",
             "/error"
     };
 

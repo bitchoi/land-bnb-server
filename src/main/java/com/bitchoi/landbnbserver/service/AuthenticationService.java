@@ -89,4 +89,8 @@ public class AuthenticationService {
 
         return res;
     }
+
+    public void logout(int memberId) {
+        refreshTokenRepo.deleteById(memberId);
+    }
 }

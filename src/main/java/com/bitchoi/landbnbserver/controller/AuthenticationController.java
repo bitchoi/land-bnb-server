@@ -2,13 +2,11 @@ package com.bitchoi.landbnbserver.controller;
 
 import com.bitchoi.landbnbserver.dto.JwtRequest;
 import com.bitchoi.landbnbserver.dto.JwtResponse;
+import com.bitchoi.landbnbserver.facade.AuthenticationFacade;
 import com.bitchoi.landbnbserver.service.AuthenticationService;
 import com.bitchoi.landbnbserver.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -20,6 +18,7 @@ public class AuthenticationController {
 
     private final MemberService memberService;
     private final AuthenticationService authService;
+    private final AuthenticationFacade authenticationFacade;
 
     @PostMapping("/login")
     JwtResponse login(HttpServletResponse response, @RequestBody JwtRequest jwtRequest){
@@ -31,6 +30,12 @@ public class AuthenticationController {
         cookie.setMaxAge(60 * 60 * 24 * 30);
         response.addCookie(cookie);
         return res;
+    }
+
+    @GetMapping("/logout")
+    void logout(){
+        var memberId = authenticationFacade.getAuthentication().getUserId();
+        authService.logout(memberId);
     }
 
 }
