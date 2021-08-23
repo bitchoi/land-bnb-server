@@ -51,6 +51,15 @@ public class AuthenticationService {
                 String email = jwtRequest.getEmail();
                 member = emailAndPassword(email, jwtRequest.getPassword()).orElseThrow(() -> new BusinessException(ErrorCode.WRONG_EMAIL_OR_PASSWORD));
                 break;
+            case REFRESH_TOKEN:
+                var refreshToken =
+                        refreshTokenRepo.findByRefreshToken(jwtRequest.getRefreshToken()).orElseThrow(() -> new BusinessException(ErrorCode.REFRESH_TOKEN_NOT_FOUND));
+                if (refreshToken.getExpiredOn().before(new Date()))
+                    throw new BusinessException(ErrorCode.REFRESH_TOKEN_EXPIRED);
+                member = refreshToken.getMember();
+                if (member == null)
+                    throw new BusinessException(ErrorCode.MEMBER_NOT_FOUND);
+                break;
             default:
                 throw new IllegalStateException("Grant type cannot be null");
         }

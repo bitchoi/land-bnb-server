@@ -17,4 +17,6 @@ public class JwtRequest implements Serializable {
     private String password;
 
     private GrantType grantType;
+
+    private String refreshToken;
 }
