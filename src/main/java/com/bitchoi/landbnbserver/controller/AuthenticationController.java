@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
@@ -33,7 +34,12 @@ public class AuthenticationController {
     }
 
     @GetMapping("/logout")
-    void logout(){
+    void logout(HttpServletRequest request, HttpServletResponse response){
+        Cookie tokenCookie = new Cookie("refreshToken", null);
+        tokenCookie.setMaxAge(0);
+        tokenCookie.setPath("/");
+        tokenCookie.setHttpOnly(true);
+        response.addCookie(tokenCookie);
         var memberId = authenticationFacade.getAuthentication().getUserId();
         authService.logout(memberId);
     }
