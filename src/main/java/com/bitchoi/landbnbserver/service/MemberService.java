@@ -34,10 +34,10 @@ public class MemberService {
     }
 
     public Optional<UserDetails> getUserByEmail(String email) {
-        Optional<Member> optUsr = memberRepo.findByEmail(email);
+        Optional<Member> optMem = memberRepo.findByEmail(email);
 
-        if (optUsr.isPresent())
-            return Optional.of(new UserDetails(optUsr.get()));
+        if (optMem.isPresent())
+            return Optional.of(new UserDetails(optMem.get()));
         else return Optional.empty();
     }
 }
